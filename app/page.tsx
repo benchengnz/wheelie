@@ -1,95 +1,53 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+// app/page.tsx
+'use client';
 
-export default function Home() {
+import React, { useState } from 'react';
+import { Container, Box } from '@mui/material';
+import WheelDisplay from '../components/organisms/WheelDisplay';
+import ConfigModal from '../components/organisms/ConfigModal';
+import ConfigButton from '../components/atoms/ConfigButton';
+
+export interface Slice {
+  text: string;
+  color: string;
+}
+
+export default function HomePage() {
+  // Default slices configuration
+  const [slices, setSlices] = useState<Slice[]>([
+    { text: ' 1', color: '#9F0702' },
+    { text: ' 2', color: '#52A704' },
+    { text: ' 3', color: '#4993C3' },
+  ]);
+  const [configModalOpen, setConfigModalOpen] = useState<boolean>(false);
+
+  const handleConfigSave = (newSlices: Slice[]) => {
+    setSlices(newSlices);
+    setConfigModalOpen(false);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <Box
+      sx={{
+        backgroundImage: 'url("./dtbackground.jpg")',
+        backgroundSize: 'cover', // fills the container, may crop the image
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        pt: 4,
+      }}
+    >
+      <Container maxWidth='xs' sx={{ textAlign: 'center', mt: 14 }}>
+        <WheelDisplay slices={slices} />
+        <Box mt={2}>
+          <ConfigButton onClick={() => setConfigModalOpen(true)} />
+        </Box>
+        <ConfigModal
+          open={configModalOpen}
+          onClose={() => setConfigModalOpen(false)}
+          slices={slices}
+          onSave={handleConfigSave}
         />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </Container>
+    </Box>
   );
 }
