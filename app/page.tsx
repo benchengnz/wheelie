@@ -34,6 +34,7 @@ export default function HomePage() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         pt: 4,
+        minHeight: '100vh', // Ensure the Box takes at least the full viewport height
       }}
     >
       <Container maxWidth='xs' sx={{ textAlign: 'center', mt: 14 }}>
